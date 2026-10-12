@@ -1,0 +1,7 @@
+measure,panel,rho_s,operators,p_value
+delta_a,all operators observed in both episodes,0.4148,76,0.00019
+delta_a,>= 100 flights in each period of each episode,0.5191,24,0.0093
+delta_a,>= 200 flights in each period of each episode,0.6853,12,0.014
+raw event-period clearance,23-operator closure-exposed panel,0.5109,23,0.013
+residual standoff,23-operator closure-exposed panel,0.4723,23,0.023
+delta_a,23-operator closure-exposed panel,0.1754,23,0.42

@@ -1,0 +1,3 @@
+episode,fit_nodes,sigma_nm,log_rmse_exponential,xi_bar_nm,log_rmse_hard_buffer,ratio_hard_to_exponential,h_at_anchor,d_half_nm,d_half_lo_nm,d_half_hi_nm
+2026,13,27.0,0.174,108.0,2.128,12.251,0.329,40.5,38.3,54.9
+2025,13,21.6,0.406,108.0,2.269,5.591,0.223,49.0,46.9,53.9

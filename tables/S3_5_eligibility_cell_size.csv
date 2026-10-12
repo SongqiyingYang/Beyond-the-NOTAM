@@ -1,0 +1,15 @@
+cell_size_deg,min_near_boundary_flights,main,share_cell_floor,median_residual_nm,episode,near_boundary_threshold
+1.5,20,True,0.909,9.9,2026,27.0 NM
+1.5,30,False,0.686,10.9,2026,27.0 NM
+1.5,50,False,0.686,10.9,2026,27.0 NM
+1.5,20,False,0.663,11.5,2026,16.2 NM
+1.5,40,False,0.56,12.7,2026,16.2 NM
+1.0,20,False,0.857,8.4,2026,27.0 NM
+2.5,20,False,0.921,8.5,2026,27.0 NM
+1.5,20,True,0.962,9.8,2025,27.0 NM
+1.5,30,False,0.962,9.8,2025,27.0 NM
+1.5,50,False,0.901,9.9,2025,27.0 NM
+1.5,20,False,0.949,9.8,2025,16.2 NM
+1.5,40,False,0.862,9.9,2025,16.2 NM
+1.0,20,False,0.954,9.6,2025,27.0 NM
+2.5,20,False,0.977,9.8,2025,27.0 NM

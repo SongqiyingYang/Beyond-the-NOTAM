@@ -1,0 +1,33 @@
+episode,fir,closed_from_utc,closed_to_utc,code,coding,evidence,basis
+2025,LLLL,2025-06-13 01:00,2025-06-24 12:00,A,closed,industry report,"Israeli civil airspace closed at the start of hostilities on 13 June (outbound repatriation flights only, by prior permission); reopened from 24 June after the ceasefire. Flightradar24 blog; safeairspace.net."
+2025,OIIX,2025-06-13 01:30,2025-06-27 00:00,A,closed,official notice,"Iranian CAA NOTAM closing the national airspace until further notice, reported by state media and The Times of Israel; no transit traffic resumed before the end of the analysis period on 27 June."
+2025,ORBB,2025-06-13 01:00,2025-06-25 06:00,A,closed,official notice,Iraqi CAA: airspace closed on 13 June and reopened on 25 June after a safety assessment. Iraqi News; safeairspace.net.
+2025,OSTT,2025-06-13 01:00,2025-06-14 06:00,A,closed,industry report,Closed on 13 June together with Jordan and Lebanon; reopened on 14 June (The National; Malay Mail).
+2025,OSTT,2025-06-14 06:00,2025-06-24 12:00,B,operationally closed (transit on designated routes only),industry report,From 14 June transit allowed on a few designated airways only (safeairspace.net); full reopening on 24 June. Coded as operationally closed (coding B).
+2025,OJAC,2025-06-13 17:00,2025-06-14 04:30,night_only,night closure only (not in closure set),industry report,"Jordan closed on the evening of 13 June and reopened at 07:30 local time on 14 June, followed by intermittent night closures (Arab News; The National). Less than half a day per day closed: not in the closure set."
+2025,OLBB,2025-06-13 18:00,2025-06-14 07:00,night_only,night closure only (not in closure set),industry report,"Lebanon closed for 12 hours, reopened at 10:00 local time on 14 June, followed by night closures. Less than half a day per day closed: not in the closure set."
+2025,OTDF,2025-06-23 16:00,2025-06-24 01:00,short_event,closure of a few hours (not in closure set),industry report,Qatar closed its airspace for a few hours after the strike on Al Udeid on 23 June. Outside the evaluation window.
+2025,OBBB,2025-06-23 16:30,2025-06-23 22:00,short_event,closure of a few hours (not in closure set),industry report,Short closure of Bahraini airspace on 23 June. Outside the evaluation window.
+2025,OKAC,2025-06-23 16:30,2025-06-23 22:00,short_event,closure of a few hours (not in closure set),industry report,Short closure of Kuwaiti airspace on 23 June. Outside the evaluation window.
+2025,OMAE,2025-06-23 17:00,2025-06-23 21:00,short_event,closure of a few hours (not in closure set),industry report,"Short closure of, and widespread delays in, UAE airspace on 23 June. Outside the evaluation window."
+2026,LLLL,2026-02-28 06:54,2026-03-06 10:00,A,closed,NOTAM,"NOTAM A0195/26 and A0205/26 (operations by prior permission only, treated as closed to transit)."
+2026,LLLL,2026-03-06 10:00,2026-04-09 00:00,A,closed,industry report,Renewals of the closure NOTAM reported in the Flightradar24 blog closure tables (7 and 14 March); fully lifted on 8 to 9 April.
+2026,OBBB,2026-03-01 05:30,2026-03-13 09:24,A,closed,industry report,"After a short closure (A0058/26) and reopening (A0060/26) on 28 February, closed again; first listed in the Flightradar24 closure table of 1 March, 05:30 UTC. No transit traffic observed from 1 March."
+2026,OBBB,2026-03-13 09:24,2026-04-08 00:00,A,closed,industry report,"Partial reopening for departures from Bahrain by prior permission only; transit remained closed (Flightradar24 blog, 14 March)."
+2026,OIIX,2026-02-28 08:21,2026-03-01 08:30,A,closed,NOTAM,NOTAM A0715/26 and A0717/26 (full text reproduced by dlapilota).
+2026,OIIX,2026-03-01 08:30,2026-03-03 05:28,A,closed,traffic data,Gap between NOTAM renewals; continuity of the closure supported only by industry reporting and by the absence of transit traffic.
+2026,OIIX,2026-03-03 05:28,2026-03-07 08:30,A,closed,NOTAM,NOTAM A0723/26.
+2026,OIIX,2026-03-07 08:30,2026-04-18 03:30,A,closed,industry report,Rolling renewals reported in the Flightradar24 blog closure tables (11 March); eastern part reopened on 18 April (official announcement).
+2026,OJAC,2026-03-02 15:00,2026-03-04 09:15,night_only,night closure only (not in closure set),official notice,Official announcement: closed at night only (15:00 to 06:00 UTC). Less than half a day per day closed: not in the closure set.
+2026,OKAC,2026-02-28 11:31,2026-02-28 13:30,A,closed,NOTAM,NOTAM A0085/26.
+2026,OKAC,2026-03-01 00:00,2026-04-24 00:00,A,closed,industry report,Re-closure with rolling renewals reported in the Flightradar24 blog (start taken as 1 March); overflight ban beyond the analysis period. No transit traffic observed.
+2026,ORBB,2026-02-28 09:15,2026-03-01 09:00,A,closed,NOTAM,NOTAM A0142/26 (full text reproduced by dlapilota).
+2026,ORBB,2026-03-01 09:00,2026-04-08 00:00,A,closed,industry report,Rolling renewals reported in the Flightradar24 blog (4 to 14 March); reopened on 8 April (official). No transit traffic observed from 1 to 6 March.
+2026,OSTT,2026-03-01 00:00,2026-04-08 00:00,A,closed,industry report,Total closure from 1 March reported in the Flightradar24 blog (on 28 February only individual routes were closed); the Aleppo exemption does not affect transit; lifted on 8 April (official).
+2026,OTDF,2026-02-28 08:36,2026-02-28 13:00,A,closed,NOTAM,NOTAM A0454/26.
+2026,OTDF,2026-02-28 20:19,2026-03-01 04:30,A,closed,NOTAM,NOTAM A0458/26.
+2026,OTDF,2026-03-01 04:30,2026-03-10 12:03,A,closed,industry report,Rolling renewals reported in the Flightradar24 blog.
+2026,OTDF,2026-03-10 12:03,2026-04-20 00:00,A,closed,industry report,"ESCAT with prior permission and explicitly closed to overflights (Flightradar24 blog, 11 and 14 March); transit closed until about 20 April."
+2026,OMAE,2026-02-28 11:02,2026-03-16 12:00,B,operationally closed (transit on designated routes only),industry report,"ESCAT / partial-closure regime (Flightradar24 blog, 4 and 14 March); not fully closed, but transit effectively interrupted (Table S1.2). Coded as operationally closed (coding B)."
+2026,OEJD,,,open,open (not in closure set),NOTAM,"NOTAM A0616/26: FIR available for rerouting; restriction limited to an area bordering Iraq and the Persian Gulf, published without lateral limits. Not in the closure set."
+2026,UBBA,2026-03-05 11:10,2026-03-06 20:00,sub_fir,partial closure below FIR level (not in closure set),industry report,"Southern sector only (Flightradar24 blog, 7 March). Below FIR level: not in the closure set."

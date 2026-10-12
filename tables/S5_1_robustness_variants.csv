@@ -1,0 +1,19 @@
+variant,description,episode,exposed_markets,exposed_event_flights,profile_monotone,monotone_all_7_definitions,ratio_hard_to_exponential,d_half_nm,d_half_lo_nm,d_half_hi_nm,median_clearance_nm,median_floor_nm,median_residual_nm,median_residual_lo_nm,median_residual_hi_nm,median_residual_q0_nm,median_residual_q10_nm,d_half_range_7_definitions_nm,rho_s_delta,rho_s_operators,rho_s_p_value
+main,main specification,2025,1066,8032,True,True,5.6,49.0,46.9,53.9,20.2,3.2,9.8,9.3,9.9,16.3,6.3,47.0-49.1,0.415,76,0.00019
+main,main specification,2026,432,2785,True,True,12.3,40.5,38.3,54.9,21.9,7.6,9.9,6.8,13.1,14.8,1.6,38.0-43.8,0.415,76,0.00019
+trim_50,trajectory within 27.0 NM of airports excluded,2025,1065,7933,True,True,8.8,49.4,47.0,52.9,20.2,2.6,9.3,9.1,9.9,16.3,6.3,47.5-49.4,0.434,75,0.0001
+trim_50,trajectory within 27.0 NM of airports excluded,2026,430,2769,True,True,14.5,43.2,38.7,52.9,25.4,7.8,10.0,6.9,13.7,16.6,1.4,38.8-44.1,0.434,75,0.0001
+trim_100,trajectory within 54.0 NM of airports excluded,2025,1065,7924,True,True,8.1,51.9,47.9,58.5,20.2,2.8,7.5,7.2,9.6,16.3,6.1,48.5-52.0,0.459,75,3.4e-05
+trim_100,trajectory within 54.0 NM of airports excluded,2026,430,2767,True,True,14.6,45.5,38.7,54.1,25.4,7.8,4.8,1.5,6.8,16.6,1.4,39.0-46.2,0.459,75,3.4e-05
+markets_dropped_50,markets served from an airport within 27.0 NM of the closure set dropped,2025,667,4636,True,True,6.5,48.6,46.7,54.0,24.6,4.4,20.2,16.4,21.5,23.8,14.6,46.8-48.6,0.46,66,0.0001
+markets_dropped_50,markets served from an airport within 27.0 NM of the closure set dropped,2026,334,2318,True,True,11.2,40.4,38.2,54.7,27.9,17.0,11.7,7.0,13.8,14.5,2.0,38.0-43.9,0.46,66,0.0001
+markets_dropped_100,markets served from an airport within 54.0 NM of the closure set dropped,2025,540,4040,True,True,7.7,53.2,48.9,60.6,26.3,9.3,19.3,15.2,21.3,23.9,6.5,49.2-53.2,0.444,65,0.00021
+markets_dropped_100,markets served from an airport within 54.0 NM of the closure set dropped,2026,324,2279,True,True,10.2,40.4,38.2,54.9,28.0,17.0,10.7,7.0,13.7,14.5,1.8,38.0-42.7,0.444,65,0.00021
+omae_boundary,2026: OMAE removed from the closure boundary,2026,408,2613,True,True,6.8,67.2,62.5,71.9,46.5,6.9,30.8,20.2,40.6,36.4,17.2,67.2-75.6,0.402,76,0.00032
+omae_boundary_trim_50,"2026: OMAE removed from the closure boundary, trim 27.0 NM",2026,406,2597,True,True,6.1,64.9,60.7,73.8,49.3,6.8,25.0,19.0,31.6,31.5,16.8,64.9-79.3,0.423,75,0.00016
+omae_open,2026: OMAE open (UAE-endpoint flights admitted),2026,774,3905,True,True,6.8,57.2,50.3,65.6,27.0,6.8,14.5,13.0,20.3,24.7,8.8,57.2-66.4,0.337,84,0.0017
+omae_open_trim_50,"2026: OMAE open, trim 27.0 NM",2026,771,3887,True,True,3.8,49.7,48.7,50.6,45.8,5.5,16.5,14.4,19.9,37.1,10.2,48.9-51.1,0.35,83,0.0012
+ostt_boundary,2025: OSTT removed from the closure boundary,2025,1048,7877,True,True,5.1,48.7,46.6,53.8,20.2,2.9,12.6,9.5,12.7,16.7,6.3,47.0-48.8,0.417,76,0.00018
+ostt_boundary_trim_50,"2025: OSTT removed from the closure boundary, trim 27.0 NM",2025,1047,7779,True,True,8.2,50.3,47.5,53.7,20.2,2.6,12.1,9.7,12.2,16.7,6.2,48.1-50.4,0.418,75,0.00019
+ostt_open,2025: OSTT open (Syrian-endpoint flights admitted),2025,1059,7892,True,True,5.2,48.4,46.5,53.6,20.2,2.9,12.5,9.5,12.7,16.7,6.3,46.9-48.5,0.417,76,0.00018
+ostt_open_trim_50,"2025: OSTT open, trim 27.0 NM",2025,1058,7794,True,True,8.2,49.9,47.2,53.7,20.2,2.6,12.1,9.7,12.2,16.7,6.2,48.0-50.1,0.418,75,0.00019

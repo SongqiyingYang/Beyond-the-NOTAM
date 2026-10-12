@@ -1,0 +1,15 @@
+episode,definition,units,event_flights,monotone,d_half_nm,d_half_lo_nm,d_half_hi_nm,ratio_hard_to_exponential
+2026,"market, r_o > 0 (main)",432,2785,True,40.5,38.3,54.9,12.251
+2026,"market, r_o >= 0.25",398,2421,True,40.0,37.9,54.3,14.028
+2026,"market, r_o >= 0.50",353,1877,True,39.4,37.2,53.5,14.973
+2026,"market, r_o >= 0.75",294,1396,True,38.8,36.2,54.3,8.683
+2026,"market, r_o = 1",253,898,True,38.1,35.7,51.3,8.416
+2026,"continuing service, r > 0",689,1821,True,43.8,37.9,55.5,6.639
+2026,"continuing service, r = 1",529,1224,True,38.0,35.5,53.2,4.895
+2025,"market, r_o > 0 (main)",1066,8032,True,49.0,46.9,53.9,5.591
+2025,"market, r_o >= 0.25",1020,7411,True,49.1,46.8,54.8,5.465
+2025,"market, r_o >= 0.50",943,6453,True,48.4,46.4,53.2,9.915
+2025,"market, r_o >= 0.75",835,5262,True,47.0,45.0,49.3,8.787
+2025,"market, r_o = 1",689,3540,True,47.5,45.4,50.9,10.735
+2025,"continuing service, r > 0",1846,6666,True,48.3,46.3,53.2,10.067
+2025,"continuing service, r = 1",1468,4988,True,47.0,45.2,50.0,6.434

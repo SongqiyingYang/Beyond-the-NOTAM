@@ -1,0 +1,5 @@
+episode,fir,period,n_days,flights_entering_fir,passenger,passenger_with_endpoint,passenger_transit_flights,passenger_transit_per_day
+2026,OMAE,baseline,7,18681,18465,14594,3871,553.0
+2026,OMAE,event,5,1949,1949,1774,175,35.0
+2025,OSTT,baseline,6,665,665,170,495,82.5
+2025,OSTT,event,5,40,40,38,2,0.4

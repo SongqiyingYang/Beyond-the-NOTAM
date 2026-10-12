@@ -1,0 +1,13 @@
+episode,markets,window,beta,ci_lo,ci_hi
+2026,closure-exposed,10.8 NM to 32.4 NM,-0.69,-0.81,-0.57
+2026,closure-exposed,32.4 NM to 81.0 NM,-1.48,-1.7,-1.28
+2026,closure-exposed,81.0 NM to 162.0 NM,-2.4,-3.69,-1.68
+2026,unexposed,10.8 NM to 32.4 NM,-0.51,-0.8,-0.03
+2026,unexposed,32.4 NM to 81.0 NM,-0.82,-1.01,-0.62
+2026,unexposed,81.0 NM to 162.0 NM,-1.37,-2.08,-0.86
+2025,closure-exposed,10.8 NM to 32.4 NM,-0.99,-1.09,-0.9
+2025,closure-exposed,32.4 NM to 81.0 NM,-1.46,-1.67,-1.28
+2025,closure-exposed,81.0 NM to 162.0 NM,-3.18,-4.04,-2.42
+2025,unexposed,10.8 NM to 32.4 NM,-1.1,-1.33,-0.89
+2025,unexposed,32.4 NM to 81.0 NM,-1.04,-1.58,-0.52
+2025,unexposed,81.0 NM to 162.0 NM,-1.11,-2.0,-0.02
