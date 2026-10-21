@@ -1,0 +1,5 @@
+reference,episode,exposed_od_pairs,od_pairs_with_reference,exposed_event_flights,event_flights_with_profile,comparable_flights
+all baseline crossings,2025,1066,1062,8032,7779,4116
+all baseline crossings,2026,432,425,2785,2666,1624
+crossings without gaps > 30 min,2025,1066,861,8032,6653,3560
+crossings without gaps > 30 min,2026,432,351,2785,2332,1470

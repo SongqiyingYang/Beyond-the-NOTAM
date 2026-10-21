@@ -1,0 +1,15 @@
+episode,definition,units,event_flights,monotone,d_half_nm,d_half_lo_nm,d_half_hi_nm
+2026,"OD pair, r_o > 0 (main)",432,2785,True,40.5,38.3,54.9
+2026,"OD pair, r_o >= 0.25",398,2421,True,40.0,37.9,54.3
+2026,"OD pair, r_o >= 0.50",353,1877,True,39.4,37.2,53.5
+2026,"OD pair, r_o >= 0.75",294,1396,True,38.8,36.2,54.3
+2026,"OD pair, r_o = 1",253,898,True,38.1,35.7,51.3
+2026,"continuing service, r > 0",689,1821,True,43.8,37.9,55.5
+2026,"continuing service, r = 1",529,1224,True,38.0,35.5,53.2
+2025,"OD pair, r_o > 0 (main)",1066,8032,True,49.0,46.9,53.9
+2025,"OD pair, r_o >= 0.25",1020,7411,True,49.1,46.8,54.8
+2025,"OD pair, r_o >= 0.50",943,6453,True,48.4,46.4,53.2
+2025,"OD pair, r_o >= 0.75",835,5262,True,47.0,45.0,49.3
+2025,"OD pair, r_o = 1",689,3540,True,47.5,45.4,50.9
+2025,"continuing service, r > 0",1846,6666,True,48.3,46.3,53.2
+2025,"continuing service, r = 1",1468,4988,True,47.0,45.2,50.0

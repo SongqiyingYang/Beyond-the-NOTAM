@@ -1,4 +1,5 @@
-"""Figures 5 to 8 of the paper from the outputs of run_all.py.
+"""Figures 5 to 8 of the paper from the outputs of run_all.py (Figs. 5-7) and
+step4_operators.py (Fig. 8), written to the same --run directory.
 
 Usage: python make_figures.py --run results/main --out figures/
 Distances are drawn in the unit of the run's tables (NM by default).
@@ -8,7 +9,6 @@ from pathlib import Path
 
 import matplotlib
 matplotlib.use("Agg")
-import matplotlib.patheffects as pe                 # noqa: E402
 import matplotlib.pyplot as plt                     # noqa: E402
 import numpy as np                                  # noqa: E402
 import pandas as pd                                 # noqa: E402
@@ -21,15 +21,6 @@ COLOR = {"2026": "#d62728", "2025": "#1f77b4"}
 MARKER = {"2026": "s", "2025": "o"}
 CLASS_COLOR = {"high": "#6a3d9a", "low": "#1b9e9e", "other": "#c8c8c8"}
 EPISODES = ("2025", "2026")
-# label offsets (points) used in the paper's Fig. 8; other coloured operators get (4, 0)
-LABEL_OFF = {"RBG": (-4, 0, "right", "center"), "NMA": (-4, 0, "right", "center"),
-             "VIR": (4, 0, "left", "center"), "SWR": (4, 0, "left", "center"),
-             "MSR": (0, 3.5, "center", "bottom"), "KLM": (3, -4, "left", "center"),
-             "AFR": (-3, -3.5, "center", "top"), "THY": (1, 3, "left", "bottom"),
-             "WMT": (-4, 1, "right", "center"), "WZZ": (-3, -2.5, "right", "top"),
-             "SXS": (-4, 1, "right", "center"), "AEE": (4, -2, "left", "top")}
-LABEL_TEXT = {"AEE": "AEE, FIE"}
-SKIP_LABEL = {"FIE"}                                # shares the AEE label in the paper
 
 
 def style():
@@ -62,8 +53,8 @@ def fig5(run, out):
     fig, ax = plt.subplots(figsize=(3.45, 2.55))
     for ev in EPISODES:
         col, mk = COLOR[ev], MARKER[ev]
-        pe_ = P[(P.episode == ev) & (P.markets == "closure-exposed") & (P[d] <= xmax + 0.05)]
-        pu = P[(P.episode == ev) & (P.markets == "unexposed") & (P[d] <= xmax + 0.05)]
+        pe_ = P[(P.episode == ev) & (P.od_pairs == "closure-exposed") & (P[d] <= xmax + 0.05)]
+        pu = P[(P.episode == ev) & (P.od_pairs == "unexposed") & (P[d] <= xmax + 0.05)]
         ax.plot(pu[d], pu.h_hat, "--", color=col, lw=0.8, marker=mk, ms=2.4, mfc="white", mec=col, mew=0.6,
                 label=f"{ev} unexposed")
         ax.fill_between(pe_[d], pe_.ci_lo, pe_.ci_hi, color=col, alpha=0.18, lw=0)
@@ -79,28 +70,32 @@ def fig5(run, out):
     ax.legend(loc="upper right", frameon=False, handlelength=2.3, labelspacing=0.3)
     finish(ax, fig, out, "fig5_profile")
 
+    # (b) two-parameter benchmarks on the original scale (Eqs. 11-12)
     fig, ax = plt.subplots(figsize=(3.45, 2.55))
-    ax.axvspan(20 * f, 200 * f, color="#efefef", zorder=0)
-    dd = np.linspace(0, xmax, 301)
-    handles, labels = [], []
-    fmt = ".1f" if tag == "nm" else "g"
+    ax.axvspan(20 * f, 200 * f, color="#f2f2f2", zorder=0)
+    dd = np.linspace(0, xmax, 601)
+    handles, labels, edges = [], [], []
     for ev in EPISODES:
         col, mk = COLOR[ev], MARKER[ev]
-        q = P[(P.episode == ev) & (P.markets == "closure-exposed") & (P[d] <= xmax + 0.05) & (P.h_hat > 0)]
-        ax.vlines(q[d], np.maximum(q.ci_lo, 1e-4), q.ci_hi, color=col, lw=0.6, alpha=0.5, zorder=3)
+        q = P[(P.episode == ev) & (P.od_pairs == "closure-exposed") & (P[d] <= xmax + 0.05)]
+        ax.vlines(q[d], q.ci_lo, q.ci_hi, color=col, lw=0.6, alpha=0.5, zorder=3)
         ax.plot(q[d], q.h_hat, mk, color=col, ms=3.0, zorder=4)
-        sig = Fi.loc[ev, f"sigma_{tag}"]
-        ax.plot(dd, np.exp(-dd / sig), "--", color=col, lw=0.9, alpha=0.85)
-        handles.append((Line2D([], [], ls="--", color=col, lw=0.9), Line2D([], [], ls="", marker=mk, color=col, ms=3)))
-        labels.append(fr"{ev}, exponential $\sigma$={sig:{fmt}} {lab}")
-    qb = Fi[f"xi_bar_{tag}"].iloc[0]
-    ax.plot([0, qb, qb, xmax], [1, 1, 1e-6, 1e-6], color="#9a9a9a", lw=1.0, alpha=0.7)
-    handles.append(Line2D([], [], color="#9a9a9a", lw=1.0, alpha=0.7))
-    labels.append(fr"hard buffer $\bar\xi$={qb:{fmt}} {lab}")
-    ax.set_yscale("log"); ax.set_xlim(0, xmax); ax.set_ylim(2e-3, 1.5)
-    ax.set_xlabel(f"distance $d$ ({lab})"); ax.set_ylabel(r"$\widehat h(d)$ (log scale)")
-    ax.legend(handles, labels, loc="lower left", frameon=False, handlelength=1.8, borderpad=0.2,
-              labelspacing=0.2, handler_map={tuple: HandlerTuple(ndivide=None, pad=0)})
+        r = Fi.loc[ev]
+        sig, xlo, xhi = r[f"sigma_{tag}"], r[f"xi_bar_lo_{tag}"], r[f"xi_bar_hi_{tag}"]
+        edges.append((xlo, xhi))
+        ax.plot(dd, r.A_exponential * np.exp(-dd / sig), "--", color=col, lw=0.9, alpha=0.9, zorder=5)
+        xm = (xlo + xhi) / 2                      # edge drawn at the middle of its interval
+        ax.plot([0, xm, xm, xmax], [r.A_hard_buffer, r.A_hard_buffer, 0, 0], "-", color=col, lw=0.9,
+                alpha=0.6, zorder=5)
+        handles += [(Line2D([], [], ls="", marker=mk, color=col, ms=3.0), Line2D([], [], ls="--", color=col, lw=0.9)),
+                    Line2D([], [], ls="-", color=col, lw=0.9, alpha=0.6)]
+        labels += [fr"{ev} observed, exponential ($\sigma$={sig:.1f} {lab})", f"{ev} hard buffer"]
+    ax.axvspan(min(e[0] for e in edges), max(e[1] for e in edges), color="#d9d9d9", alpha=0.6, lw=0, zorder=1)
+    ax.axhline(0, color="k", lw=0.5)
+    ax.set_xlim(0, xmax); ax.set_ylim(-0.05, 0.85)
+    ax.set_xlabel(f"distance $d$ ({lab})"); ax.set_ylabel(r"$\widehat h(d)$")
+    ax.legend(handles, labels, loc="upper right", fontsize=5.6, frameon=False, handlelength=1.8, borderpad=0.2,
+              labelspacing=0.25, handler_map={tuple: HandlerTuple(ndivide=None, pad=0)})
     finish(ax, fig, out, "fig5_benchmark")
     return tag, lab, f
 
@@ -143,45 +138,38 @@ def fig6_7(run, out, lab, f):
 
 
 def fig8(run, out):
-    T = {ev: pd.read_csv(run / "tables" / f"S4_1_operator_effects_{ev}.csv").set_index("operator")
-         for ev in EPISODES}
-    tag, lab, _ = unit_of(T["2025"].columns, "delta")
-    j = T["2025"].join(T["2026"], lsuffix="_25", rsuffix="_26", how="inner")
-    x, y = j[f"delta_{tag}_25"], j[f"delta_{tag}_26"]
-    rc = pd.read_csv(run / "tables" / "S4_3_rank_correlations.csv").iloc[0]   # computed in km
-    rho, p, n = rc.rho_s, rc.p_value, len(j)
-    u25, u26 = (x.rank() - 0.5) / n, (y.rank() - 0.5) / n
-    cnt = j[["baseline_flights_25", "event_flights_25", "baseline_flights_26", "event_flights_26"]]
-    elig = cnt.min(1) >= 50
-    cls = pd.Series("other", index=j.index)
-    cls[(u25 > 2 / 3) & (u26 > 2 / 3) & elig] = "high"
-    cls[(u25 < 1 / 3) & (u26 < 1 / 3) & elig] = "low"
-    size = 9 + 16 * np.sqrt(cnt.sum(1) / cnt.sum(1).max())
-    fig, ax = plt.subplots(figsize=(3.45, 3.2))
-    ax.axhline(0, color="#999", lw=0.4, zorder=0); ax.axvline(0, color="#999", lw=0.4, zorder=0)
+    """Operator-relative standoff R_k (Eq. 15), 2025 against 2026, main specification."""
+    T = pd.read_csv(run / "tables" / "S4_1_operator_relative_standoff.csv").set_index("operator")
+    tag = [c for c in T.columns if c.startswith("R_")][0].split("_")[1]
+    lab = "NM" if tag == "nm" else "km"
+    j = T                                             # S4_1 holds the main panel only
+    x, y = j[f"R_{tag}_2025"], j[f"R_{tag}_2026"]
+    R = pd.read_csv(run / "tables" / "S4_2_rank_correlations.csv")
+    rc = R[(R.reference == "all baseline crossings") & (R.min_comparable_flights == C.OPERATOR_MIN_MAIN)
+           & (R.arc_fraction == C.ARC_FRACTION_MAIN)].iloc[0]
+    cls = j.tercile_both.fillna("").map({"upper": "high", "lower": "low"}).fillna("other")
+    nt = j.comparable_flights_2025 + j.comparable_flights_2026
+    size = 12 + 40 * np.sqrt(nt / nt.max())
+    fig, ax = plt.subplots(figsize=(3.6, 3.4))
+    ax.axhline(0, color="#999", lw=0.5, zorder=0); ax.axvline(0, color="#999", lw=0.5, zorder=0)
     for c in ("other", "low", "high"):
         m = cls == c
-        ax.scatter(x[m], y[m], s=size[m], facecolor=CLASS_COLOR[c], edgecolor="white", lw=0.4,
-                   alpha=0.85 if c == "other" else 0.95, zorder=3 if c == "other" else 4)
-    halo = [pe.withStroke(linewidth=1.6, foreground="white")]
+        ax.scatter(x[m], y[m], s=size[m], color=CLASS_COLOR[c], lw=0.4, edgecolor="white",
+                   zorder=3 if c != "other" else 2)
     for op in cls.index[cls != "other"]:
-        if op in SKIP_LABEL:
-            continue
-        dx, dy, ha, va = LABEL_OFF.get(op, (4, 0, "left", "center"))
-        ax.annotate(LABEL_TEXT.get(op, op), (x[op], y[op]), xytext=(dx, dy), textcoords="offset points",
-                    ha=ha, va=va, fontsize=5.6, color=CLASS_COLOR[cls[op]], fontweight="bold",
-                    path_effects=halo, zorder=6)
-    lim = (-27, 49) if tag == "nm" else (-50, 90)
-    ax.set_xlim(lim); ax.set_ylim(lim); ax.set_aspect("equal")
-    ax.set_xlabel(rf"$\widehat\delta_a^{{\,2025}}$ ({lab})"); ax.set_ylabel(rf"$\widehat\delta_a^{{\,2026}}$ ({lab})")
-    mant, ex = f"{p:.1e}".split("e")
-    ax.text(0.03, 0.97, fr"$\rho_S$ = {rho:.3f}" + "\n" + fr"$p$ = {mant}$\times10^{{{int(ex)}}}$" + "\n"
-            + fr"$n$ = {n}", transform=ax.transAxes, ha="left", va="top", fontsize=6.5)
-    handles = [Line2D([], [], ls="", marker="o", ms=4.5, mfc=CLASS_COLOR[k], mec="none", label=t) for k, t in
-               (("high", f"upper tercile in both ({(cls == 'high').sum()})"),
-                ("low", f"lower tercile in both ({(cls == 'low').sum()})"), ("other", "other operators"))]
-    ax.legend(handles=handles, loc="lower right", fontsize=5.8, frameon=False, handletextpad=0.2)
-    finish(ax, fig, out, "fig7_operator_scatter")
+        ax.annotate(op, (x[op], y[op]), xytext=(4, 2), textcoords="offset points", fontsize=6.5,
+                    color=CLASS_COLOR[cls[op]], fontweight="bold")
+    ax.text(0.02, 0.98, f"Spearman ρ = {rc.rho_s:.2f}\ntwo-sided permutation p = {rc.p_two_sided:.2f}"
+            f"\nn = {int(rc.operators)} operators", transform=ax.transAxes, ha="left", va="top", fontsize=7)
+    pct = int(C.ARC_FRACTION_MAIN * 100)
+    tl = f"Distance relative to other operators\nnearest {pct}% of the detour arc, {{}} ({lab})"
+    ax.set_xlabel(tl.format(2025), fontsize=7.5); ax.set_ylabel(tl.format(2026), fontsize=7.5)
+    ax.legend(handles=[Line2D([], [], marker="o", ls="", color=CLASS_COLOR[k], ms=5, label=t) for k, t in
+                       (("high", f"farther than peers in both ({(cls == 'high').sum()})"),
+                        ("low", f"closer than peers in both ({(cls == 'low').sum()})"),
+                        ("other", "other operators"))],
+              fontsize=6, frameon=False, loc="upper left", bbox_to_anchor=(0.0, 0.83))
+    finish(ax, fig, out, "fig8_operator_relative_standoff")
 
 
 def main():

@@ -2,11 +2,11 @@
 
   anchor_cells        boundary anchor a_f of every flight (closest-approach position projected
                       onto the boundary of the closure set) and its 1.5-degree cell
-  cell_floors         fifth percentile of positive baseline clearances per cell (Eq. 17) and
+  cell_floors         fifth percentile of positive baseline clearances per cell (Eq. 4) and
                       eligibility: >= 40 such flights, >= 20 of them within 50 km of the boundary
   fir_floors          FIR-level fifth percentile (>= 100 positive baseline clearances), used for
                       flights anchored to an ineligible cell
-  residuals           residual standoff of closure-exposed event-period flights (Eq. 18)
+  residuals           residual standoff of closure-exposed event-period flights (Eq. 5)
   median_ci           OD-clustered bootstrap interval of the median residual (B = 1000)
   quantile_sensitivity, eligibility_sensitivity, validation_cells
 """

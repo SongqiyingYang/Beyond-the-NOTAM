@@ -1,4 +1,7 @@
-"""Run steps 2 to 4 on the flight tables of both episodes and write the result tables.
+"""Run steps 2 and 3 on the flight tables of both episodes and write the result tables S2-S3.
+
+Step 4 (operator-relative standoff) needs the trajectories again and is run separately with
+step4_operators.py (see code/README.md).
 
 Usage (main specification):
   python run_all.py --flights-2025 flights_2025.parquet --flights-2026 flights_2026.parquet \
@@ -6,16 +9,13 @@ Usage (main specification):
 
 Sensitivity variants (Section III-D; see code/README.md):
   airport trimming   build the flight tables with step1_clearance.py --trim-km 50 (or 100)
-  OMAE / OSTT        build the 2026 (2025) flight table with step1_clearance.py --drop-fir OMAE
-                     (OSTT), then pass --geometry-drop 2026:OMAE (2025:OSTT; closure boundary
-                     without that FIR) and, for the "open" coding, also --endpoint-drop
-                     2026:OMAE (flights to and from UAE airports admitted)
-  market dropping    --drop-markets-km 50 (or 100): markets served from an airport within that
-                     distance of the closure set are removed (airportsdata, filled from
-                     --airports, e.g. OurAirports' airports.csv)
+  OMAE codings       build the 2026 flight table with step1_clearance.py --drop-fir OMAE, then
+                     pass --geometry-drop 2026:OMAE (closure boundary without OMAE) and, for the
+                     "open" coding, also --endpoint-drop 2026:OMAE (flights to and from UAE
+                     airports admitted)
 
 Outputs in --out:
-  tables/   S2_*, S3_*, S4_* in the format of the repository's tables/ (distances in --unit)
+  tables/   S2_*, S3_* in the format of the repository's tables/ (distances in --unit)
   summary.json   headline quantities used by collect_variants.py
   private/  flight-level residuals (input of Fig. 7); do not share if your data licence
             forbids redistribution of flight-level data
@@ -30,11 +30,10 @@ import pandas as pd
 import common as C
 import step2_profile as S2
 import step3_floor as S3
-import step4_operators as S4
 
 
 def _drops(tokens, episode):
-    """'FIR' applies to both episodes, 'EPISODE:FIR' (e.g. 2025:OSTT) to one episode only."""
+    """'FIR' applies to both episodes, 'EPISODE:FIR' (e.g. 2026:OMAE) to one episode only."""
     return {t.split(":")[-1] for t in tokens if ":" not in t or t.split(":")[0] == episode}
 
 
@@ -46,20 +45,6 @@ def load_sample(path, episode, geometry_drop, endpoint_drop):
     return C.analysis_sample(F, excl), geom
 
 
-def drop_markets_near(F, geom_xy, km, airports=None):
-    """Remove markets whose origin or destination airport lies within km of the closure set;
-    flights with an airport of unknown position are removed as well."""
-    import shapely
-    ap = C.airport_coordinates(airports)
-    codes = pd.unique(pd.concat([F.orig_icao, F.dest_icao]).astype(str))
-    ll = np.array([ap.get(c, (np.nan, np.nan)) for c in codes], float)
-    xy = C.project(ll[:, 1], ll[:, 0])
-    d = pd.Series(shapely.distance(shapely.points(xy[:, 0], xy[:, 1]), geom_xy), index=codes)
-    dmin = np.fmin(F.orig_icao.astype(str).map(d), F.dest_icao.astype(str).map(d))
-    unknown = F.orig_icao.astype(str).map(d).isna() | F.dest_icao.astype(str).map(d).isna()
-    return F[~unknown & (dmin >= km)].copy()
-
-
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--flights-2025", required=True)
@@ -69,8 +54,6 @@ def main():
     ap.add_argument("--unit", choices=("nm", "km"), default="nm")
     ap.add_argument("--geometry-drop", action="append", default=[])
     ap.add_argument("--endpoint-drop", action="append", default=[])
-    ap.add_argument("--drop-markets-km", type=float, default=0.0)
-    ap.add_argument("--airports", help="optional CSV filling airportsdata (see common.airport_coordinates)")
     a = ap.parse_args()
     U = C.Unit(a.unit)
     out = Path(a.out); (out / "tables").mkdir(parents=True, exist_ok=True)
@@ -82,31 +65,24 @@ def main():
         print(f"  -> tables/{name}")
 
     samples, geoms, summary = {}, {}, {}
-    prof, fits, slopes, cells_rows, fir_rows, dec, qrows, srows, quant, eff, effsum, panel = (
-        [], [], [], [], [], [], [], [], [], {}, [], {})
+    prof, fits, cells_rows, fir_rows, dec, qrows, srows, quant = [], [], [], [], [], [], [], []
     resid_private = []
     for ep, path in (("2026", a.flights_2026), ("2025", a.flights_2025)):
         F, geom = load_sample(path, ep, a.geometry_drop, a.endpoint_drop)
         gxy = C.closure_geometry(firs, geom)
-        if a.drop_markets_km > 0:
-            F = drop_markets_near(F, gxy, a.drop_markets_km, a.airports)
         samples[ep], geoms[ep] = F, gxy
         X = C.split_exposure(F)
-        print(f"[run/{ep}] analysis sample {len(F):,} flight-periods; closure-exposed markets "
+        print(f"[run/{ep}] analysis sample {len(F):,} flight-periods; closure-exposed OD pairs "
               f"{X['exposed'].od.nunique():,}, event flights {(X['exposed'].period == 'event').sum():,}")
 
-        # ---- step 2 (one random stream per episode: unexposed markets first, then exposed)
+        # ---- step 2 (one random stream per episode: unexposed OD pairs first, then exposed)
         rng_profile = np.random.default_rng(C.SEED_PROFILE)
         P = {}
         for lab in ("unexposed", "exposed"):
             P[lab] = S2.profile_with_ci(X[lab], rng_profile)
         for lab in ("exposed", "unexposed"):
-            p, boot = P[lab]
-            prof.append(p.assign(episode=ep, markets="closure-exposed" if lab == "exposed" else lab))
-            pt, lo, hi = S2.slopes_with_ci(p, boot)
-            for i, (w0, w1) in enumerate(C.SLOPE_WINDOWS):
-                slopes.append(dict(episode=ep, markets=prof[-1].markets.iloc[0],
-                                   window=f"{U.thr(w0)} to {U.thr(w1)}", beta=pt[i], ci_lo=lo[i], ci_hi=hi[i]))
+            p, _ = P[lab]
+            prof.append(p.assign(episode=ep, od_pairs="closure-exposed" if lab == "exposed" else lab))
         pe = P["exposed"][0]
         bf = S2.benchmark_fits(pe)
         fits.append(dict(episode=ep, **bf, h_at_anchor=float(np.interp(C.D_HALF_ANCHOR, pe.d_km, pe.h_hat)),
@@ -147,13 +123,9 @@ def main():
         val.reset_index().rename(columns={"index": "cell"}).assign(episode=ep).to_csv(
             out / "private" / f"validation_cells_{ep}.csv", index=False)
 
-        # ---- step 4
-        eff[ep], s = S4.operator_effects(F)
-        effsum.append(dict(episode=ep, **s))
-        panel[ep] = S4.exposed_panel(F, E)
-        summary[ep] = dict(exposed_markets=int(X["exposed"].od.nunique()),
+        summary[ep] = dict(exposed_od_pairs=int(X["exposed"].od.nunique()),
                            exposed_event_flights=int((X["exposed"].period == "event").sum()),
-                           profile_monotone=mono, ratio_hard_to_exponential=bf["ratio_hard_to_exponential"],
+                           profile_monotone=mono,
                            median_clearance_km=float(E.clearance_km.median()), median_floor_km=float(E.floor.median()),
                            median_residual_km=float(E.residual.median()), median_residual_lo_km=lo,
                            median_residual_hi_km=hi, median_residual_q0_km=qs[0], median_residual_q10_km=qs[0.10])
@@ -170,8 +142,6 @@ def main():
         for f in fits:
             if f["episode"] == ep:
                 f.update(d_half_lo_km=m.d_half_lo_km, d_half_hi_km=m.d_half_hi_km)
-    RC = S4.rank_correlations(eff, panel)
-    summary["rank_correlation_delta"] = RC.iloc[0].to_dict()
 
     # ---- write tables (distances converted to the reporting unit)
     def conv(df, cols, nd=1):
@@ -181,16 +151,15 @@ def main():
             df[c] = U(df[c], nd)
         return df.rename(columns={c: c.replace("_km", f"_{U.tag}") for c in cols})
 
-    def sig2(s):
-        return s.map(lambda v: float(f"{v:.2g}"))
-
     Pf = pd.concat(prof)
-    save(conv(Pf[["episode", "markets", "d_km", "h_hat", "ci_lo", "ci_hi", "se", "event_flights_within_d",
+    save(conv(Pf[["episode", "od_pairs", "d_km", "h_hat", "ci_lo", "ci_hi", "se", "event_flights_within_d",
                    "baseline_flights_within_d"]], ["d_km"]).round(4), "S2_1_avoidance_profile.csv")
-    save(conv(pd.DataFrame(fits), ["sigma_km", "xi_bar_km", "d_half_km", "d_half_lo_km", "d_half_hi_km"]).round(3),
+    Fi = pd.DataFrame(fits)
+    lo_, hi_ = U.thr(C.FIT_NODES.min()), U.thr(C.FIT_NODES.max())
+    Fi.insert(2, "fit_range", f"{lo_.split()[0]}-{hi_}")
+    save(conv(Fi, ["sigma_km", "xi_bar_lo_km", "xi_bar_hi_km", "d_half_km", "d_half_lo_km", "d_half_hi_km"]).round(3),
          "S2_2_benchmark_fits.csv")
-    save(pd.DataFrame(slopes).round(2), "S2_3_local_slopes.csv")
-    save(conv(D, ["d_half_km", "d_half_lo_km", "d_half_hi_km"]).round(3), "S2_4_exposure_definitions.csv")
+    save(conv(D, ["d_half_km", "d_half_lo_km", "d_half_hi_km"]).round(3), "S2_3_exposure_definitions.csv")
     save(conv(pd.DataFrame(cells_rows), ["floor_p5_km", "event_p10_km"]).assign(
         near_boundary_threshold=U.thr(C.CELL_NEAR_KM)), "S3_1_boundary_cells.csv")
     save(conv(pd.DataFrame(fir_rows), ["floor_p5_km"]), "S3_2_fir_fallback_floors.csv")
@@ -202,13 +171,6 @@ def main():
     save(conv(S5, ["median_residual_km"]).round(3), "S3_5_eligibility_cell_size.csv")
     Q = pd.DataFrame(quant)
     save(conv(Q, [c for c in Q.columns if c.endswith("_km")]), "S3_6_residual_quantiles.csv")
-    for ep in ("2025", "2026"):
-        save(conv(eff[ep].assign(p_value=sig2(eff[ep].p_value)), ["delta_km", "se_km", "ci_lo_km", "ci_hi_km"]),
-             f"S4_1_operator_effects_{ep}.csv")
-    ES = pd.DataFrame(effsum)
-    save(conv(ES.assign(F=ES.F.round(2), p_value=sig2(ES.p_value)), ["span_delta_km"]), "S4_2_homogeneity_tests.csv")
-    save(RC.assign(rho_s=RC.rho_s.round(4), p_value=sig2(RC.p_value)),
-         "S4_3_rank_correlations.csv")
     pd.concat(resid_private).to_parquet(out / "private" / "residuals.parquet")
     with open(out / "summary.json", "w") as fh:
         json.dump(summary, fh, indent=1, default=float)

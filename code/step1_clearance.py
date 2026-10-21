@@ -1,4 +1,4 @@
-"""Step 1: minimum horizontal clearance of every flight from the closure set (Eq. 2).
+"""Step 1: minimum horizontal clearance of every flight from the closure set (Eq. 1).
 
 Input
   --tracks     directory of parquet files with one row per trajectory point on the 60-s grid:
@@ -24,8 +24,8 @@ Variants (Section III-D)
   --trim-km R      ignore trajectory points within R km of the flight's own origin and
                    destination airports (airport coordinates from the airportsdata package,
                    optionally filled from --airports)
-  --drop-fir FIR   remove a FIR from the closure set used for distances (e.g. OMAE in 2026,
-                   OSTT in 2025); the analysis-sample screening is set in run_all.py
+  --drop-fir FIR   remove a FIR from the closure set used for distances (OMAE in 2026); the
+                   analysis-sample screening is set in run_all.py
 
 Output: parquet, one row per flight and period, with columns
   fr24_id, period, day, clearance_km, nearest_fir, near_lat, near_lon, n_pts,

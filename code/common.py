@@ -30,11 +30,8 @@ KM_DEG = 111.195              # km per degree of latitude
 DGRID = np.array([10, 15, 20, 25, 30, 40, 50, 60, 75, 90, 100, 120, 150, 175,
                   200, 225, 250, 275, 300, 350, 400, 450, 500, 600, 750, 900], float)
 FIT_NODES = np.array([20, 25, 30, 40, 50, 60, 75, 90, 100, 120, 150, 175, 200], float)
-SIGMA_GRID = np.array([10, 15, 20, 25, 30, 40, 50, 65, 80, 100, 130, 160, 200,
-                       250, 320, 400, 500, 650, 800], float)
-XI_BAR_GRID = np.arange(20, 620, 20, dtype=float)
-LOG_FLOOR = 1e-6              # predicted values are floored before taking logarithms
-SLOPE_WINDOWS = [(20, 60), (60, 150), (150, 300)]
+SIGMA_GRID = np.arange(5.0, 1001.0, 1.0)      # exponential scale, km (Eq. 12)
+XI_BAR_STEP = 1.0                              # hard-buffer edge grid step within the fitting window, km (Eq. 11)
 D_HALF_ANCHOR = 50.0
 EXPOSURE_TAUS = (0.25, 0.50, 0.75, 1.0)
 B_PROFILE, SEED_PROFILE = 2000, 20260825
@@ -51,10 +48,19 @@ VALIDATION_MIN_EVENT = 20
 B_RESIDUAL, SEED_RESIDUAL = 1000, 20260825
 
 # ----------------------------------------------------------------------------- Section III-C
-MARKET_MAX_MEDIAN_KM = 400.0
-MARKET_MIN_BASELINE = 3
-OPERATOR_MIN_FLIGHTS = 25
-PANEL_MIN_EXPOSED = 20
+OUTLINE_SMOOTH_KM = 200.0     # closing radius of the smoothed closure outline used for the detour arcs
+OUTLINE_SIMPLIFY_KM = 2.0
+ARC_STEP_KM = 5.0             # spacing of the sampled arc positions s
+TRACK_DENSIFY_KM = 5.0        # trajectories are densified to this spacing before nearest-point queries
+ARC_END_KM = 200.0            # common arc segment: from the first to the last s where the lower envelope <= this
+GAP_S = 300                   # a gap longer than this (s) splits a trajectory into separate segments
+MIN_SEGMENT_POINTS = 3        # segments with fewer points between gaps are treated as position outliers
+ARC_FRACTIONS = (0.10, 0.20, 0.30, 0.50)      # m_f = mean of the smallest share of d_f(s); main 0.20
+ARC_FRACTION_MAIN = 0.20
+OPERATOR_MIN_FLIGHTS = (10, 15, 20)           # comparable flights per operator in each episode; main 10
+OPERATOR_MIN_MAIN = 10
+REFERENCE_MAX_GAP_S = 1800    # sensitivity: reference crossings with no data gap longer than this
+B_PERMUTATION, SEED_PERMUTATION = 2000, 20261021
 
 # ICAO location-indicator prefix -> FIR, used to place origin and destination airports
 PREFIX_FIR = {
@@ -194,7 +200,7 @@ def analysis_sample(F, endpoint_exclusion):
 
 
 def split_exposure(F):
-    """Markets observed in both periods, split into closure-exposed (r_o > 0: at least one
+    """OD pairs observed in both periods, split into closure-exposed (r_o > 0: at least one
     baseline flight entered the subsequently closed airspace) and unexposed (r_o = 0)."""
     touched = (F[F.period == "baseline"].assign(z=lambda x: x.clearance_km <= 0.0)
                .groupby("od").z.any())
@@ -207,6 +213,6 @@ def split_exposure(F):
 
 
 def penetration_rate(F):
-    """r_o = share of a market's baseline flights with zero clearance (Eq. 3)."""
+    """r_o = share of an OD pair's baseline flights with zero clearance (Eq. 2)."""
     b = F[F.period == "baseline"]
     return b.assign(z=b.clearance_km <= 0).groupby("od").z.mean()

@@ -2,9 +2,9 @@
 
 Supplementary material for the paper *Beyond the NOTAM: Revealed Airspace-Avoidance Behaviour During Major Airspace Closures* (under double-blind review; author information withheld).
 
-The paper uses before-and-after commercial flight trajectories from two conflict-related airspace-closure episodes in the Middle East (June 2025 and March 2026). It measures the routing response beyond the published closure boundary through three tools: a revealed avoidance profile, a baseline-revealed structural floor, and market–operator fixed effects. This repository contains two parts:
+The paper uses before-and-after commercial flight trajectories from two conflict-related airspace-closure episodes in the Middle East (June 2025 and March 2026). It measures the routing response beyond the published closure boundary with three tools: a revealed avoidance profile, a baseline-revealed structural floor, and operator-relative standoff along the detour arcs around the closure. This repository contains two parts:
 
-- **`tables/`**: the complete results behind the main text. These cover the closure coding, the full profiles and benchmark fits, the structural-floor construction, the operator estimates, and the sensitivity analyses referred to in the paper.
+- **`tables/`**: the results behind the main text and the sensitivity analyses referred to in the paper;
 - **`code/`**: the code that produces these tables and Figs. 5–8 from flight trajectories.
 
 All tables are aggregate results. No flight-level data are included (see [Data availability](#data-availability)).
@@ -19,34 +19,33 @@ Section, equation, figure, and table numbers refer to the paper.
 | `tables/S1_1_closure_calendar.csv` | FIR-level closure calendar of both episodes, with coding, type of evidence, and sources | Sec. II-D, Table I |
 | `tables/S1_2_transit_coding_B.csv` | Transit traffic through the two FIRs coded as operationally closed (OMAE 2026, OSTT 2025) | Sec. II-D |
 | **S2. Revealed avoidance profile** | | |
-| `tables/S2_1_avoidance_profile.csv` | $\widehat h(d)$ with 95% intervals, closure-exposed and unexposed markets, 5.4–486.0 NM | Eq. (9), Fig. 5(a) |
-| `tables/S2_2_benchmark_fits.csv` | Hard-buffer and exponential benchmark fits, half-decay distance | Eqs. (12)–(13), (15), Fig. 5(b) |
-| `tables/S2_3_local_slopes.csv` | Local log–log slope $\beta(d)$ over three distance windows | Eq. (14) |
-| `tables/S2_4_exposure_definitions.csv` | Profile summaries under the seven exposure definitions | Eq. (16) |
+| `tables/S2_1_avoidance_profile.csv` | $\widehat h(d)$ with 95% intervals, closure-exposed and unexposed OD pairs, 5.4–486.0 NM | Eq. (8), Fig. 5(a) |
+| `tables/S2_2_benchmark_fits.csv` | Hard-buffer and exponential benchmark fits, half-decay distance | Eqs. (11)–(13), Fig. 5(b) |
+| `tables/S2_3_exposure_definitions.csv` | Profile summaries under the seven exposure definitions | Eq. (14) |
 | **S3. Revealed structural floor** | | |
-| `tables/S3_1_boundary_cells.csv` | Every boundary-anchor cell: baseline counts, floor, eligibility, event-period lower tail | Eq. (17), Figs. 4 and 6 |
+| `tables/S3_1_boundary_cells.csv` | Every boundary-anchor cell: baseline counts, floor, eligibility, event-period lower tail | Eq. (4), Figs. 4 and 6 |
 | `tables/S3_2_fir_fallback_floors.csv` | FIR-level fallback floors | Sec. III-B |
-| `tables/S3_3_decomposition.csv` | Median clearance, floor, and residual standoff with 95% intervals | Eq. (18), Fig. 7 |
+| `tables/S3_3_decomposition.csv` | Median clearance, floor, and residual standoff with 95% intervals | Eq. (5), Fig. 7 |
 | `tables/S3_4_floor_quantile.csv` | Median residual standoff for $q \in \{0, 0.01, 0.02, 0.05, 0.10\}$ | Sec. IV-B |
 | `tables/S3_5_eligibility_cell_size.csv` | Median residual standoff under alternative cell-eligibility rules and cell sizes | Sec. III-D |
 | `tables/S3_6_residual_quantiles.csv` | Quantiles of the residual-standoff distribution | Fig. 7 |
-| **S4. Operator-associated heterogeneity** | | |
-| `tables/S4_1_operator_effects_2025.csv`, `..._2026.csv` | $\widehat\delta_a$ for every operator, with standard errors and 95% intervals | Eq. (19), Fig. 8 |
-| `tables/S4_2_homogeneity_tests.csv` | Estimation samples and joint $F$-tests of equal operator effects | Sec. IV-C |
-| `tables/S4_3_rank_correlations.csv` | Cross-event Spearman correlations on the full panel and on restricted panels | Eq. (20), Sec. III-C |
+| **S4. Operator-relative standoff** | | |
+| `tables/S4_1_operator_relative_standoff.csv` | $R_k$ and number of comparable flights of the 24 operators in both episodes | Eq. (15), Fig. 8 |
+| `tables/S4_2_rank_correlations.csv` | Cross-event rank correlations and permutation tests under the operator sensitivity analyses | Secs. III-D, IV-C |
+| `tables/S4_3_reference_arcs.csv` | OD pairs with a reference arc and flights with a boundary-distance profile | Sec. III-C |
 | **S5. Sensitivity analyses** | | |
-| `tables/S5_1_robustness_variants.csv` | Headline quantities under the airport-proximity treatments and the alternative closure codings | Sec. III-D |
+| `tables/S5_1_robustness_variants.csv` | Headline quantities under airport trimming and the alternative OMAE codings | Secs. II-D, III-D |
 | **Code** | | |
 | `code/` | Reproduction code; see [`code/README.md`](code/README.md) | Secs. II–III |
 
 ## Conventions
 
 - **Episodes.** The 2025 episode compares the baseline window 6–11 June 2025 with the evaluation window 13–17 June 2025; its closure set is LLLL, OIIX, ORBB, OSTT. The 2026 episode compares 21–27 February 2026 with 2–6 March 2026; its closure set is LLLL, OBBB, OIIX, OKAC, OMAE, ORBB, OSTT, OTDF. Trajectories are on a 60-s grid.
-- **Markets.** A directional origin–destination (OD) market is *closure-exposed* when at least one of its baseline flights entered the airspace that subsequently closed ($r_o > 0$, Eq. (4)). Otherwise it is *unexposed*. Only markets observed in both periods are used.
+- **OD pairs.** A directional origin–destination (OD) pair is *closure-exposed* when at least one of its baseline flights entered the airspace that subsequently closed ($r_o > 0$, Eqs. (2)–(3)). Otherwise it is *unexposed*. Only OD pairs observed in both periods are used.
 - **Distances.** All distances are horizontal distances from the boundary of the FIR-level closure set $S_0$, reported in nautical miles (NM; 1 NM = 1.852 km). Column names carry the unit (`_nm`).
   - The analysis was carried out in kilometers. Its thresholds were set as round values in km and appear here at their converted values: for example, 50 km is 27.0 NM, and the fitting window of 20–200 km is 10.8–108.0 NM.
-  - Statistics without a distance unit do not depend on this conversion: profile values, error ratios, $F$, $\rho_S$, and $p$.
-- **Intervals.** Intervals are 95% percentile intervals from nonparametric bootstraps clustered by OD market:
+  - Statistics without a distance unit do not depend on this conversion: profile values, amplitudes, error ratios, $\rho_S$, and $p$.
+- **Intervals.** Intervals are 95% percentile intervals from nonparametric bootstraps clustered by OD pair:
 
   | Quantity | Replications |
   |---|---|
@@ -54,7 +53,6 @@ Section, equation, figure, and table numbers refer to the paper.
   | Half-decay distance | $B = 1500$ |
   | Median residual standoff | $B = 1000$ |
 
-  Operator effects use OD-clustered standard errors.
 - **Operators** are identified by ICAO three-letter airline designators.
 
 ## S1. Closure coding
@@ -90,54 +88,32 @@ Two restrictions in the 2026 evaluation window lie outside $S_0$ because they we
 - the partial closure of an area of the Jeddah FIR (OEJD) bordering Iraq and the Persian Gulf, published without lateral limits;
 - the closure of the southern sector of the Baku FIR (UBBA) on 5–6 March.
 
-Such restrictions can move event-period traffic outward without moving the structural floor. Under a literal reading of the Jeddah restriction, 33 of the 2,785 closure-exposed 2026 event flights (1.2%) have their closest approach on the affected stretch of the boundary.
-
 ## S2. Revealed avoidance profile
 
-**Profile (`S2_1`).** $\widehat h(d)$ of Eq. (9) is tabulated at every distance node from 5.4 to 486.0 NM, for closure-exposed and unexposed markets in both episodes. The columns `event_flights_within_d` and `baseline_flights_within_d` give the number of flights within distance $d$ in each period. On closure-exposed markets the profile decreases monotonically in both episodes. On unexposed markets it does not:
+**Profile (`S2_1`).** $\widehat h(d)$ of Eq. (8) is tabulated at every distance node from 5.4 to 486.0 NM, for closure-exposed and unexposed OD pairs in both episodes. The columns `event_flights_within_d` and `baseline_flights_within_d` give the number of flights within distance $d$ in each period. On closure-exposed pairs the profile decreases monotonically in both episodes. On unexposed pairs it does not:
 
 - 2025: $\widehat h(54.0) = 0.014 < \widehat h(108.0) = 0.032$;
 - 2026: $\widehat h(27.0) = 0.083 < \widehat h(54.0) = 0.114$.
 
-**Benchmarks (`S2_2`).** Both reference shapes are fitted by weighted least squares on the logarithmic scale, on the 13 distance thresholds between 10.8 and 108.0 NM.
+**Benchmarks (`S2_2`).** The hard buffer $A\,\mathbf 1\{d \le \bar\xi\}$ (Eq. 11) and the exponential $A\exp(-d/\sigma)$ (Eq. 12) are fitted to the closure-exposed profile on the 13 distance thresholds from 10.8 to 108.0 NM.
 
-- **Weights:** $(\widehat h/\mathrm{se})^2$ (delta method).
-- **Zero predictions:** the hard buffer predicts zero beyond $\bar\xi$; such values are floored at $10^{-6}$ before taking logarithms.
-- **Parameter grids:**
+- **Criterion:** weighted least squares on the original scale, with inverse-variance weights $1/\mathrm{se}^2$, where se is the standard deviation of the profile bootstrap (`S2_1`).
+- **Amplitude:** $A$ is estimated separately for each benchmark.
+- **Grids:** $\sigma$ from 2.7 to 540.0 NM (5–1000 km) in steps of 0.54 NM (1 km); $\bar\xi$ across the fitting window in the same steps. The hard-buffer loss does not change between two adjacent thresholds, so its edge is identified only as an interval: `xi_bar_lo` is the smallest optimal value and `xi_bar_hi` the next threshold.
+- **Fit quality:** the weighted root-mean-square error $\sqrt{\sum_i w_i r_i^2 / 13}$, with the same weights $w_i$ as the fit.
 
-  | Parameter | Grid |
-  |---|---|
-  | $\bar\xi$ | 10.8–324.0 NM in steps of 10.8 NM (20–600 km in steps of 20 km) |
-  | $\sigma$ | 5.4, 8.1, 10.8, 13.5, 16.2, 21.6, 27.0, 35.1, 43.2, 54.0, 70.2, 86.4, 108.0, 135.0, 172.8, 216.0, 270.0, 351.0, 432.0 NM |
-
-- **Fit quality:** the unweighted root-mean-square error of $\log \widehat h$ over the same 13 thresholds.
-
-| Episode | $\sigma$ (NM) | $\bar\xi$ (NM) | log-RMSE, exponential | log-RMSE, hard buffer | Ratio | $d_{1/2}$ (NM) |
+| Episode | $\sigma$ (NM) | $A_{\exp}$ | Hard-buffer edge (NM) | $A_{\text{hard}}$ | Weighted RMSE ratio, hard / exponential | $d_{1/2}$ (NM) |
 |---|---|---|---|---|---|---|
-| 2025 | 21.6 | 108.0 | 0.406 | 2.269 | 5.6 | 49.0 [46.9, 53.9] |
-| 2026 | 27.0 | 108.0 | 0.174 | 2.128 | 12.3 | 40.5 [38.3, 54.9] |
+| 2025 | 24.8 | 0.86 | 32.4–40.5 | 0.35 | 4.4 | 49.0 [46.9, 53.9] |
+| 2026 | 28.6 | 0.80 | 32.4–40.5 | 0.39 | 7.9 | 40.5 [38.3, 54.9] |
 
-**Local slopes (`S2_3`).** On closure-exposed markets the slope steepens with distance in both episodes:
-
-| Episode | 10.8–32.4 NM | 32.4–81.0 NM | 81.0–162.0 NM |
-|---|---|---|---|
-| 2025 | −0.99 | −1.46 | −3.18 |
-| 2026 | −0.69 | −1.48 | −2.40 |
-
-On unexposed markets it is flatter, and in 2025 it does not steepen at all (−1.10, −1.04, −1.11).
-
-**Exposure definitions (`S2_4`).** The table covers seven definitions:
+**Exposure definitions (`S2_3`).** The table covers seven definitions:
 
 - the main rule $r_o > 0$;
-- the stricter thresholds $r_o \ge \tau$ of Eq. (16);
+- the stricter thresholds $r_o \ge \tau$ of Eq. (14);
 - two definitions at the level of continuing services, where a service is an operator and flight number observed in both periods.
 
-The closure-exposed profile is monotone under all seven.
-
-| Episode | Range of $d_{1/2}$ | Hard-buffer error relative to exponential |
-|---|---|---|
-| 2025 | 47.0–49.1 NM | 5.5–10.7 times |
-| 2026 | 38.0–43.8 NM | 4.9–15.0 times |
+The closure-exposed profile is monotone under all seven. $d_{1/2}$ ranges from 47.0 to 49.1 NM in 2025 and from 38.0 to 43.8 NM in 2026.
 
 ## S3. Revealed structural floor
 
@@ -165,67 +141,75 @@ The eligibility rules require at least 20, 30, 40, or 50 baseline flights within
 
 **Distribution (`S3_6`).** Quantiles of the residual standoff from the 5th to the 95th percentile, corresponding to Fig. 7.
 
-## S4. Operator-associated heterogeneity
+## S4. Operator-relative standoff
 
-**Estimation sample (`S4_2`).** Model (19) is estimated on market–operator cells observed in both periods. The OD markets are those with a baseline median clearance below 216.0 NM (400 km) and at least three baseline flights; both closure-exposed and unexposed markets are included. Operators are included if they have at least 25 flights in each period on these markets.
+**Method (Sec. III-C).** For each closure-exposed OD pair, the baseline flights that entered the closure define an entry point A and an exit point B on a smoothed outline of the closure set (morphological closing with radius 108.0 NM). A and B are the first and last intersections of the trajectory with the outline, with the trajectory joined across data gaps; the reference of the OD pair is the crossing whose (A, B) lies closest to those of the other crossings. A and B split the outline into two detour arcs, sampled every 2.7 NM.
 
-| Episode | Operators | Flights | Market–operator cells | Markets | $F$ | $p$ | Span of $\widehat\delta_a$ |
-|---|---|---|---|---|---|---|---|
-| 2025 | 110 | 59,536 | 4,503 | 2,771 | 6.72 | $4.5 \times 10^{-80}$ | 71.2 NM |
-| 2026 | 81 | 32,520 | 2,399 | 1,522 | 5.08 | $1.0 \times 10^{-38}$ | 52.0 NM |
+- Each event-period flight is assigned to the arc with the smaller mean distance to its trajectory (its detour direction).
+- $d_f(s)$ is the distance from arc position $s$ to the trajectory.
+- Flights of the same OD pair and detour direction are compared on a common arc segment: from the first to the last $s$ at which the lowest $d_f(s)$ among them is at most 108.0 NM.
+- The flight-level standoff $m_f$ is the mean of the smallest 20% of $d_f(s)$ on that segment.
+- $R_k$ (Eq. 15) averages, over operator $k$'s flights, $m_f$ minus the mean $m$ of the other operators in the same OD-pair × detour-direction group. A flight is comparable when its group contains another operator.
 
-**Operator effects (`S4_1`).** $\widehat\delta_a$ is the operator-associated before-and-after change in clearance relative to the operator's own baseline routing on the same markets. Seventy-six operators appear in both episodes.
+Trajectory segments of fewer than three points between data gaps longer than 5 min are treated as position outliers and dropped.
 
-**Rank correlations (`S4_3`).**
+**Operators (`S4_1`).** $R_k$ and the number of comparable flights of the 24 operators with at least 10 comparable flights in each episode. `tercile_both` marks the operators in the upper (farther than peers) or lower (closer than peers) tercile in both episodes, as in Fig. 8.
 
-| Measure | Panel | $\rho_S$ | $p$ |
-|---|---|---|---|
-| $\widehat\delta_a$ | 76 operators observed in both episodes | 0.415 | $1.9 \times 10^{-4}$ |
-| $\widehat\delta_a$ | 24 operators with ≥ 100 flights in each period of each episode | 0.519 | 0.009 |
-| $\widehat\delta_a$ | 12 operators with ≥ 200 flights in each period of each episode | 0.685 | 0.014 |
-| Raw event-period clearance | 23 operators with ≥ 20 closure-exposed flights in each period of each episode | 0.511 | 0.013 |
-| Residual standoff $\widehat e_f$ | same 23 operators | 0.472 | 0.023 |
-| $\widehat\delta_a$ | same 23 operators | 0.175 | 0.42 |
+**Rank correlations (`S4_2`).** Spearman $\rho_S$ of $R_k$ between the episodes for every combination of:
 
-The 23-operator panel is restricted to closure-exposed flights, whereas $\widehat\delta_a$ is estimated on all markets below 216.0 NM. The two orderings therefore need not coincide on the same operators.
+- the reference-arc rule: all baseline crossings (main), or only crossings without a data gap longer than 30 min between A and B (OD pairs without such a crossing are dropped);
+- the minimum number of comparable flights per operator in each episode: 10 (main), 15, 20;
+- the share of the arc used for $m_f$: 10%, 20% (main), 30%, 50%.
+
+$p$-values come from 2,000 permutations of operator labels within each OD-pair × detour-direction group, which preserve every operator's number of flights per group. `p_two_sided` is $P(|\rho^*| \ge |\rho|)$. `p_family_two_sided` adjusts for the four arc shares by comparing $|\rho|$ with the maximum $|\rho^*|$ over the shares in the same permutation.
+
+| Reference arcs | Min. flights | Operators | $\rho_S$ (10%–50% of the arc) | Two-sided $p$ | Family-adjusted $p$ |
+|---|---|---|---|---|---|
+| All crossings (main) | 10 | 24 | 0.27–0.35 (20%: 0.32) | 0.13–0.25 (20%: 0.17) | 0.21–0.39 |
+| All crossings | 15 or 20 | 17 | 0.00–0.11 | 0.70–1.00 | 0.90–1.00 |
+| Crossings without gaps > 30 min | 10 | 18 | 0.49–0.53 | 0.04–0.06 | 0.09–0.12 |
+| Crossings without gaps > 30 min | 15 or 20 | 16 | 0.38–0.44 | 0.11–0.18 | 0.20–0.29 |
+
+The correlations are positive throughout; none is significant at the 5% level after the adjustment for arc shares.
+
+**Reference arcs (`S4_3`).**
+
+| Reference arcs | Episode | OD pairs with a reference | Event flights with a profile | Comparable flights |
+|---|---|---|---|---|
+| All crossings | 2025 | 1,062 of 1,066 | 7,779 of 8,032 | 4,116 |
+| All crossings | 2026 | 425 of 432 | 2,666 of 2,785 | 1,624 |
+| Without gaps > 30 min | 2025 | 861 of 1,066 | 6,653 of 8,032 | 3,560 |
+| Without gaps > 30 min | 2026 | 351 of 432 | 2,332 of 2,785 | 1,470 |
 
 ## S5. Sensitivity analyses
 
-`S5_1_robustness_variants.csv` repeats the headline quantities of each analysis step under the variants below. Each variant re-runs every analysis step; the trimming and closure-coding variants first recompute the clearances.
+`S5_1_robustness_variants.csv` repeats the headline quantities of the profile and structural-floor analyses under the variants below. Each variant recomputes the clearances and re-runs every analysis step.
 
 | Variant | Description |
 |---|---|
 | `main` | Main specification |
-| `trim_50`, `trim_100` | Clearance recomputed after excluding trajectory points within 27.0 or 54.0 NM (50 or 100 km) of each flight's origin and destination airports; all markets are kept |
-| `markets_dropped_50`, `markets_dropped_100` | Markets served from an airport within 27.0 or 54.0 NM of the closure set dropped |
+| `trim_50`, `trim_100` | Clearance recomputed after excluding trajectory points within 27.0 or 54.0 NM (50 or 100 km) of each flight's origin and destination airports |
 | `omae_boundary` (2026) | OMAE removed from $S_0$; flights to and from UAE airports still excluded |
 | `omae_open` (2026) | OMAE removed from $S_0$; flights to and from UAE airports admitted |
-| `ostt_boundary`, `ostt_open` (2025) | The same two codings for OSTT |
-| `*_trim_50` | The coding variants combined with the 27.0 NM trajectory trimming |
 
-The market-dropping variants are reported as a comparison only, because they remove a large share of the exposed traffic: Dubai alone carries 30% of the 2025 exposed traffic.
+For each variant and affected episode the table reports the exposed sample, the monotonicity of the profile, $d_{1/2}$ with its interval and its range over the seven exposure definitions, and the median clearance, floor, and residual standoff with its interval, together with the residual at $q = 0$ and $q = 0.10$.
 
-The table reports, for each variant and each affected episode:
+| Variant | Episode | $d_{1/2}$ (NM) | Median residual standoff (NM) |
+|---|---|---|---|
+| main | 2025 | 49.0 [46.9, 53.9] | 9.8 [9.3, 9.9] |
+| trim_50 | 2025 | 49.4 [47.0, 52.9] | 9.3 [9.1, 9.9] |
+| trim_100 | 2025 | 51.9 [47.9, 58.5] | 7.5 [7.2, 9.6] |
+| main | 2026 | 40.5 [38.3, 54.9] | 9.9 [6.8, 13.1] |
+| trim_50 | 2026 | 43.2 [38.7, 52.9] | 10.0 [6.9, 13.7] |
+| trim_100 | 2026 | 45.5 [38.7, 54.1] | 4.8 [1.5, 6.8] |
+| omae_boundary | 2026 | 67.2 [62.5, 71.9] | 30.8 [20.2, 40.6] |
+| omae_open | 2026 | 57.2 [50.3, 65.6] | 14.5 [13.0, 20.3] |
 
-- the exposed sample and the monotonicity of the profile;
-- $d_{1/2}$ with its interval, and its range over the seven exposure definitions;
-- the ratio of the hard-buffer error to the exponential error;
-- the median clearance, the floor, and the residual standoff with its interval, together with the residual at $q = 0$ and $q = 0.10$;
-- the cross-event $\rho_S$ of $\widehat\delta_a$.
-
-Across all variants:
-
-- **Profile.** The closure-exposed profile is monotone, and the hard buffer fits at least 3.8 times worse than the exponential decay.
-- **Half-decay distance in 2025.** $d_{1/2}$ lies between 48.4 and 53.2 NM.
-- **Half-decay distance in 2026.** Under the airport treatments and the OSTT codings, $d_{1/2}$ lies between 40.4 and 45.5 NM. Under the OMAE codings it rises to between 49.7 and 67.2 NM. When OMAE is removed from the boundary, flights that passed around the United Arab Emirates are measured against more distant parts of the closure.
-- **Residual standoff.** The median residual standoff is positive throughout, from 4.8 to 30.8 NM. The lowest value, 2026 with 54.0 NM trimming, is driven by one boundary cell near Muscat whose baseline sample lies exactly at the eligibility threshold. With an eligibility threshold of 30 near-boundary flights, the value is 11.0 NM.
-- **Operator ordering.** The cross-event $\rho_S$ of $\widehat\delta_a$ ranges from 0.337 to 0.460, with $p < 0.002$ in every variant.
+The closure-exposed profile is monotone and the median residual standoff is positive in every variant. Under the OMAE codings, flights that passed around the United Arab Emirates are measured against more distant parts of the closure, which raises $d_{1/2}$ and the residual standoff.
 
 ## Code
 
-[`code/`](code/) contains the code that computes every table in S2–S5 and Figs. 5–8 from flight trajectories, flight metadata, and FIR polygons. It reads the closure calendar from `tables/S1_1_closure_calendar.csv`.
-
-Run on the data used in the paper, it reproduces all published numbers. The only exception is the local slopes and their intervals, whose bootstrap differs slightly from the archived run; the differences are documented in [`code/README.md`](code/README.md). That README also describes the required inputs, the commands for the main specification and for each sensitivity variant, and the random-number settings.
+[`code/`](code/) contains the code that computes every table in S2–S5 and Figs. 5–8 from flight trajectories, flight metadata, and FIR polygons. It reads the closure calendar from `tables/S1_1_closure_calendar.csv`. [`code/README.md`](code/README.md) describes the required inputs, the commands for the main specification and the sensitivity variants, and the random-number settings.
 
 ## Data availability
 

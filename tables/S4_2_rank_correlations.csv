@@ -1,0 +1,25 @@
+reference,min_comparable_flights,arc_fraction,operators,rho_s,p_two_sided,p_family_two_sided
+all baseline crossings,10,0.1,24,0.267,0.2465,0.3895
+all baseline crossings,10,0.2,24,0.3217,0.1675,0.2635
+all baseline crossings,10,0.3,24,0.3513,0.129,0.2075
+all baseline crossings,10,0.5,24,0.3443,0.1375,0.2175
+all baseline crossings,15,0.1,17,0.0025,0.9965,1.0
+all baseline crossings,15,0.2,17,0.0784,0.786,0.95
+all baseline crossings,15,0.3,17,0.1054,0.6955,0.898
+all baseline crossings,15,0.5,17,0.1005,0.7045,0.905
+all baseline crossings,20,0.1,17,0.0025,0.9965,1.0
+all baseline crossings,20,0.2,17,0.0784,0.786,0.95
+all baseline crossings,20,0.3,17,0.1054,0.6955,0.898
+all baseline crossings,20,0.5,17,0.1005,0.7045,0.905
+crossings without gaps > 30 min,10,0.1,18,0.4902,0.063,0.115
+crossings without gaps > 30 min,10,0.2,18,0.5108,0.055,0.0965
+crossings without gaps > 30 min,10,0.3,18,0.515,0.0515,0.093
+crossings without gaps > 30 min,10,0.5,18,0.5253,0.0445,0.0855
+crossings without gaps > 30 min,15,0.1,16,0.3765,0.179,0.289
+crossings without gaps > 30 min,15,0.2,16,0.4,0.149,0.252
+crossings without gaps > 30 min,15,0.3,16,0.4206,0.1345,0.217
+crossings without gaps > 30 min,15,0.5,16,0.4353,0.1125,0.1985
+crossings without gaps > 30 min,20,0.1,16,0.3765,0.179,0.289
+crossings without gaps > 30 min,20,0.2,16,0.4,0.149,0.252
+crossings without gaps > 30 min,20,0.3,16,0.4206,0.1345,0.217
+crossings without gaps > 30 min,20,0.5,16,0.4353,0.1125,0.1985

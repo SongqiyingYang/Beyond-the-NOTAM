@@ -1,4 +1,4 @@
-episode,markets,d_nm,h_hat,ci_lo,ci_hi,se,event_flights_within_d,baseline_flights_within_d
+episode,od_pairs,d_nm,h_hat,ci_lo,ci_hi,se,event_flights_within_d,baseline_flights_within_d
 2026,closure-exposed,5.4,0.715,0.6584,0.7658,0.0271,493,2778
 2026,closure-exposed,8.1,0.589,0.537,0.6411,0.0263,831,3096
 2026,closure-exposed,10.8,0.5687,0.516,0.621,0.0266,889,3121
