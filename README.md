@@ -1,6 +1,6 @@
 # Beyond the NOTAM: Supplementary Repository
 
-Supplementary material for the paper *Beyond the NOTAM: Revealed Airspace-Avoidance Behaviour During Major Airspace Closures* (under double-blind review; author information withheld).
+Supplementary material for the paper *Beyond the NOTAM: Revealed Airspace-Avoidance Behaviour During Major Airspace Closures*.
 
 The paper uses before-and-after commercial flight trajectories from two conflict-related airspace-closure episodes in the Middle East (June 2025 and March 2026). It measures the routing response beyond the published closure boundary with three tools: a revealed avoidance profile, a baseline-revealed structural floor, and operator-relative standoff along the detour arcs around the closure. This repository contains two parts:
 
